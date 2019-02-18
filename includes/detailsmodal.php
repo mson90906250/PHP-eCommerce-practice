@@ -1,30 +1,57 @@
+	<?php
+		require_once "../core/init.php";
+		$id = $_POST['id'];
+		//確保$id為int值
+		$id = (int)$id;
+		$sql = "SELECT * FROM product WHERE id = '$id'";
+		$result = $db->query($sql);
+		$product = $result->fetch_assoc();
+		
+		$brand_id = $product['brand'];
+		$sql = "SELECT brand FROM brand WHERE id = '$brand_id'";
+		$brand_result = $db->query($sql);
+		$brand = $brand_result->fetch_assoc();
+
+		$sizestring = $product['sizes'];
+		//explode('用於區隔的符號',string);跟split()很像
+		$size_array = explode(',', $sizestring);
+
+	?>
+
 	<!-- Details Modal -->
-	<div class="modal fade details-1" id="details-1" role="dialog" tabindex="-1" aria-labelledby="details-1" aria-hidden="true">
+
+	<!-- 利用php來回傳以下程式碼 -->
+	<!--  ob_start()打開輸出緩衝區 
+		  函數格式：void ob_start(void)
+			說明：當緩衝區激活時，所有來自PHP程序的非文件頭信息(header())均不會發送，而是保存在內部緩衝區。
+			為了輸出緩衝區的內容，可以使用ob_end_flush()或flush()輸出緩衝區的內容。-->
+	
+	<?php  ob_start()?>
+	<div class="modal fade details-1" id="details-modal" role="dialog" tabindex="-1" aria-labelledby="details-1" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<button class="close" type="button" onclick="closeModal()" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title text-center">Levis Jeans</h4>
+					<h4 class="modal-title text-center"><?= $product['title']; ?></h4>
 				</div>
 				<div class="modal-body">
 					<div class="container-fluid">
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="center-block">
-									<img src="images/products/men4.png" alt="Levis Jeans" class="details img-responsive">
+									<img src="<?= $product['image'] ?>" alt="Levis Jeans" class="details img-responsive">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<h4>Details</h4>
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam similique itaque assumenda consequuntur reiciendis non quis incidunt nihil blanditiis id, quia, eaque deleniti aliquid eligendi ipsam a accusamus numquam voluptates?</p>
+								<p><?= $product['description']; ?></p>
 								<hr>
-								<p>Price: $34.99</p>
-								<p>Brand: Levis Jeans</p>
+								<p>Price: $<?= $product['price'] ?></p>
+								<p>Brand: <?= $brand['brand']; ?></p>
 								<form action="add_cart.php" method="post">
 									<div class="form-group">
-										<p>Availible: 3</p>
 										<div class="row">
 											<div class="col-xs-3">
 												<label for="quantity">Quantity:</label>
@@ -37,9 +64,12 @@
 										<label for="size">Size:</label>
 										<select name="size" id="size">
 											<option value=""></option>
-											<option value="28">28</option>
-											<option value="32">32</option>
-											<option value="36">36</option>
+											<?php foreach ($size_array as $str) {
+												$str_array = explode(":", $str);
+												$size = $str_array[0];
+												$quantity = $str_array[1];
+												echo '<option value="'.$size.'">'.$size.'('.$quantity.' Available)</option>';
+											} ?>
 										</select>
 									</div>
 								</form>
@@ -48,10 +78,24 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-default" data-dismiss="modal">Close</button>
+					<button class="btn btn-default" onclick="closeModal()">Close</button>
 					<button class="btn btn-warning" type="submit"><span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
 				</div>
 			</div>
 		</div>
 		
 	</div>
+	<script>
+		function closeModal(){
+			jQuery("#details-modal").modal('hide');
+			setTimeout(function(){
+				jQuery("#details-modal").remove();
+				//.modal-backdrop是modal出現時在後面的背景
+				jQuery(".modal-backdrop").remove();
+			},500);
+		}
+	</script>
+
+	<?php echo ob_get_clean(); ?>
+	<!-- string ob_get_clean ( void )
+			得到当前缓冲区的内容并删除当前输出缓冲区。 -->

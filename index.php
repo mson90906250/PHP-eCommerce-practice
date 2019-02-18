@@ -23,7 +23,7 @@
 						<img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="img-thumb">
 						<p class="list-price text-danger">List Price: <s>$<?= $product['list_price'] ?></s></p>
 						<p class="price">Our Price: $<?= $product['price'] ?></p>		
-						<button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#details-1">
+						<button type="button" class="btn btn-sm btn-success" onclick="detailsmodal(<?= $product['id']; ?>)">
 							Details
 						</button>
 					</div>
@@ -32,7 +32,7 @@
 		</div>
 
 <?php 
-	include "includes/detailsmodal.php";
+	//include "includes/detailsmodal.php";
 	include "includes/rightbar.php";
 	include "includes/footer.php";
  ?>

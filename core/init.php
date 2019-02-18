@@ -11,5 +11,7 @@
 		die();
 	}
 
+	define('BASEURL','/tutorial/');
+
 
  ?>
