@@ -7,6 +7,24 @@
 	$results = $db->query($sql);
 	$errors = array();
 
+	//edit brand
+	if(isset($_GET['edit'])&&!empty($_GET['edit'])){
+		$edit_id = (int)$_GET['edit'];
+		$edit_id = sanitize($edit_id);
+		$sql2 = "SELECT * FROM brand WHERE id = '$edit_id'";
+		$edit_results = $db->query($sql2);
+		$eBrand = mysqli_fetch_assoc($edit_results);
+	}
+
+	//delete brand fram database
+	if(isset($_GET['delete']) && !empty($_GET['delete'])){
+		$delete_id = (int)$_GET['delete'];
+		$delete_id = sanitize($delete_id);
+		$sql = "DELETE FROM brand WHERE id = '$delete_id'";
+		$db->query($sql);
+		header('Location: brands.php');
+	}
+
 	//If add fomr is submited
 	if (isset($_POST['add_submit'])) {
 		$brand = sanitize($_POST['brand']);
@@ -16,6 +34,9 @@
 		}
 		//check if brands exists in database
 		$sql = "SELECT * FROM brand WHERE brand = '$brand'";
+		if(isset($_GET['edit'])){
+			$sql = "SELECT * FROM brand WHERE brand = '$brand' AND id != '$edit_id'";
+		}
 		$result = $db->query($sql);
 		$count = mysqli_num_rows($result);
 		if($count > 0){
@@ -28,6 +49,9 @@
 		}else{
 			//add brand to database
 			$sql = "INSERT INTO brand(brand) VALUES ('$brand')";
+			if(isset($_GET['edit'])){
+				$sql = "UPDATE brand SET brand = '$brand' WHERE id = '$edit_id'";
+			}
 			$db->query($sql);
 			header('location: brands.php');
 		}
@@ -38,11 +62,19 @@
 <h2 class="text-center">Brands</h2><hr>
 <!-- Brand Form -->
 <div class="text-center">
-	<form class="form-inline" action="brands.php" method="post">
+	<form class="form-inline" action="brands.php<?= ((isset($_GET['edit']))?'?edit='.$edit_id:''); ?>" method="post">
+		<?php 
+		$brand_value = '';
+		if(isset($_GET['edit'])){
+			$brand_value = $eBrand['brand'];
+		}?>
 		<div class="form-group ">
-			<label for="brand">Add A Brand</label>
-			<input type="text" name="brand" id="brand" class="form-control" value="<?= ((isset($_POST['brand'])?$_POST['brand']:'')); ?>">
-			<input type="submit" name="add_submit" class="btn btn-success" value="Add Brand" >
+			<label for="brand"><?= ((isset($_GET['edit']))?'Edit':'Add A') ?> Brand</label>
+			<input type="text" name="brand" id="brand" class="form-control" value="<?= $brand_value ?>">
+			<input type="submit" name="add_submit" class="btn btn-success" value="<?=((isset($_GET['edit']))?'Edit':'Add');?> Brand" >
+			<?php if(isset($_GET['edit'])): ?>
+				<a href="brands.php" class="btn btn-default">Cancel</a>
+			<?php endif; ?>	
 		</div>
 	</form>
 </div><hr>
