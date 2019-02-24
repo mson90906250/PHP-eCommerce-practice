@@ -6,6 +6,25 @@
 	$sql = "SELECT * FROM categories WHERE parent = 0";
 	$result = $db->query($sql);
 
+	//delete category
+	if(isset($_GET['delete'])&&!empty($_GET['delete'])){
+		$delete_id = (int)$_GET['delete'];
+		$delete_id = sanitize($delete_id);
+		
+		//如果要刪除的對象是parent的話,也要將它的child都清掉
+		$dsql = "SELECT * FROM categories WHERE id ='delete_id'";
+		$dresult = $db->query($dsql);
+		$category = mysqli_fetch_assoc($dresult);
+		if($category['parent'] == 0){
+			$dsql = "DELETE FROM categories WHERE parent = '$delete_id'";
+			$db->query($dsql);
+		}
+
+		$dsql = "DELETE FROM categories WHERE id = '$delete_id'";
+		$db->query($dsql);
+		header("Location: categories.php");
+	}
+
 	//process form (Add Category)
 	$errors = array();//用於記錄錯誤訊息
 	//確認表單有被填寫
