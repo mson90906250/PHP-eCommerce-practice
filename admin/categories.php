@@ -5,6 +5,17 @@
 
 	$sql = "SELECT * FROM categories WHERE parent = 0";
 	$result = $db->query($sql);
+	$category = "";
+	$post_parent = "";
+
+	//edit category
+	if(isset($_GET['edit'])&&!empty($_GET['edit'])){
+		$edit_id = (int)$_GET['edit'];
+		$edit_id = sanitize($edit_id);
+		$edit_sql = "SELECT * FROM categories WHERE id = '$edit_id'";
+		$edit_result = $db->query($edit_sql);
+		$edit_category = mysqli_fetch_assoc($edit_result);
+	}
 
 	//delete category
 	if(isset($_GET['delete'])&&!empty($_GET['delete'])){
@@ -30,13 +41,17 @@
 	//確認表單有被填寫
 	if(isset($_POST)&&!empty($_POST)){
 		$category = sanitize($_POST['category']);
-		$parent = sanitize($_POST['parent']);
+		$post_parent = sanitize($_POST['parent']);
 		//確認category是否為""
 		if($category == ""){
 			$errors[] .= "The category can not be left blank";
 		}
 		//確認category是否已存在於database
-		$sqlform = "SELECT * FROM categories WHERE category = '$category' AND parent = '$parent'";
+		$sqlform = "SELECT * FROM categories WHERE category = '$category' AND parent = '$post_parent'";
+		if(isset($_GET['edit'])){
+			$form_id = $edit_category['id'];
+			$sqlform = "SELECT * FROM categories WHERE category = '$category' AND parent = '$post_parent' AND id != '$form_id'";
+		}
 		$fresult = $db -> query($sqlform);
 		$count = mysqli_num_rows($fresult);
 		if($count>0){
@@ -56,10 +71,25 @@
 		<?php 
 		}else{
 			//新增category
-			$add_sql = "INSERT INTO categories(category,parent) VALUES ('$category','$parent')";
+			$add_sql = "INSERT INTO categories(category,parent) VALUES ('$category','$post_parent')";
+			if(isset($_GET['edit'])){
+				$add_sql = "UPDATE categories SET category = '$category',parent = '$post_parent' WHERE id = '$edit_id'";
+			}
 			$db -> query($add_sql);
 			//如果不用以下的方法的話,有可能會有東西沒被讀取的問題
 			header("Location: categories.php");
+		}
+	}
+
+	$category_value="";
+	$parent_value = 0;
+	if(isset($_GET['edit'])){
+		$category_value = $edit_category['category'];
+		$parent_value = $edit_category['parent'];
+	}else{
+		if(isset($_POST)){
+			$category_value = $category;
+			$parent_value = $post_parent;
 		}
 	}
 
@@ -69,29 +99,33 @@
 
  <div>
  	<div class="row">
+
+ 		<!-- Form -->
  		<div class="col-md-6">
- 			<form class="form" action="categories.php" method="post">
- 				<legend>Add Category</legend>
+ 			<form class="form" action="categories.php<?= ((isset($_GET['edit']))?'?edit='.$edit_id:'') ?>" method="post">
+ 				<legend><?= ((isset($_GET['edit']))?'Edit ':'Add A ') ?> Category</legend>
  				<!-- 顯示錯誤訊息用的 -->
  				<div id="errors"></div>
  				<div class="form-group">
  					<label for="parent">Parent</label>
  					<select class="form-control" name="parent" id="parent">
- 						<option value="0">Parent</option>
+ 						<option value="0"<?= (($parent_value == 0)?'selected = "selected"':'') ?>>Parent</option>
  						<?php while($parent = mysqli_fetch_assoc($result)): ?>
- 							<option value="<?= $parent['id']; ?>"><?= $parent['category']; ?></option>
+ 							<option value="<?= $parent['id']; ?>"<?= (($parent_value == $parent['id'])?'selected = "selected"':'') ?>><?= $parent['category']; ?></option>
  						<?php endwhile; ?>
  					</select>
  				</div>
  				<div class="form-group" >
  					<label for="category">Category</label>
- 					<input class="form-control" type="text" name="category" id="category">
+ 					<input class="form-control" type="text" name="category" id="category" value="<?= $category_value ?>">
  				</div>
  				<div class="form-group">
- 					<input type="submit" value="Add Category" class="btn btn-success">
+ 					<input type="submit" value="<?= ((isset($_GET['edit']))?'Edit ':'Add A') ?> Category" class="btn btn-success">
  				</div>
  			</form>
  		</div>
+
+ 		<!-- Table -->
  		<div class="col-md-6">
  			<table class="table table-bordered">
  				<thead>
