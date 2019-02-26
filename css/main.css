@@ -74,3 +74,7 @@ img.details{
 	width: auto;
 	margin: 0 auto;
 }
+
+#add_product_btn{
+	margin-top: -35px;
+}
