@@ -21,13 +21,19 @@
 		//注意：当用于 select 元素时，change 事件会在选择某个选项时发生。当用于 text field 或 text area 时，change 
 		//事件会在元素失去焦点时发生。
 
-		jQuery("select[name='parent']").change(getChildOptions);
-		function getChildOptions(){
+		jQuery("select[name='parent']").change(function(){
+			getChildOptions();
+		});
+		function getChildOptions(selected){
+			if(typeof selected === "undefined"){
+				var selected = "";
+			}
+
 			var parentID = jQuery('#parent').val();
 			jQuery.ajax({
 				type:"POST",
 				url:"/tutorial/admin/parsers/child_categories.php",
-				data:{parentID:parentID},
+				data:{parentID:parentID,selected:selected},
 				success:function(data){
 					jQuery("#child").html(data);
 				},
@@ -36,12 +42,6 @@
 				},
 			})
 		}
-
-		jQuery(function(){
-			if(jQuery("#parent").val()!=""){
-				getChildOptions();
-			}
-		});
 	</script>
 
 </body>
