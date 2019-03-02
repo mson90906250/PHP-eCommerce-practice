@@ -17,10 +17,10 @@
 			<div class="row">
 				<h2 class="text-center">Feature Products</h2>
 				<?php while($product = $featured->fetch_assoc()) : ?>
-					<div class="col-md-3">
+					<div class="col-md-3" style="overflow: hidden;">
 						<!-- <?= a ?> 等同 <?php echo a ?> -->
 						<h4 class="text-center"><?= $product['title'] ?></h4>
-						<img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="img-thumb img-responsive">
+						<img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="img-thumb ">
 						<p class="list-price text-danger">List Price: <s>$<?= $product['list_price'] ?></s></p>
 						<p class="price">Our Price: $<?= $product['price'] ?></p>		
 						<button type="button" class="btn btn-sm btn-success" onclick="detailsmodal(<?= $product['id']; ?>)">
