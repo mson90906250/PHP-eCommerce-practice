@@ -1,5 +1,10 @@
 <?php 
 	require_once $_SERVER['DOCUMENT_ROOT']."/tutorial/core/init.php";
+	//確認是否登入成功
+	if(!isLoggedIn()){
+		//登入失敗時執行
+		loginErrorRedirect();
+	}
 	include "includes/head.php";
 	include "includes/navigation.php";
 

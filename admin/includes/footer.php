@@ -42,7 +42,16 @@
 				},
 			})
 		}
+
+		//5000ms後清掉登入訊息
+		jQuery("document").ready(function(){
+ 			setTimeout(function(){
+ 				jQuery("#success_flash").html("");
+ 				jQuery("#error_flash").html("");
+ 			},5000);
+ 		});
 	</script>
+
 
 </body>
 </html>

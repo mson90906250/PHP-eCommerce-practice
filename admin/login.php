@@ -71,7 +71,9 @@
 			if(!empty($errors)){
 				echo display_errors($errors);
 			}else{
-				echo "log user in";
+				//若無錯誤產生即執行登入
+				$user_id = $user['id'];
+				login($user_id);
 			}
 		}
 		?>	
