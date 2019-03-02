@@ -8,6 +8,8 @@
 				<li><a href="brands.php">Brand</a></li>
 				<li><a href="categories.php">Categories</a></li>
 				<li><a href="products.php">Products</a></li>
+				<li><a href="archived.php">Archived</a></li>
+
 				<!-- <li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $parent['category']; ?><span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
