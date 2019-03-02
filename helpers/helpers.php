@@ -65,6 +65,11 @@
 		header("Location: ".$url);
 	}
 
+	//轉換時間格式
+	function prettyDate($date){
+		return date("M d,Y h:i A",strtotime($date));
+	}
+
 
 
 
