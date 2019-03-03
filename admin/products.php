@@ -19,8 +19,16 @@
 	if(isset($_GET['add'])||isset($_GET['edit'])){ 
 		$brandQuery = $db->query("SELECT * FROM brand ORDER BY brand");
 		$parentQuery =$db->query("SELECT * FROM categories WHERE parent = 0 ORDER BY category");
-		//$title = ((isset($_POST['title']))?sanitize($_POST['title']):'');
-		//$brand = ((isset($_POST['brand']))?sanitize($_POST['brand']):'');
+
+		$title = ((isset($_POST['title']))?sanitize($_POST['title']):'');
+		$brand = ((isset($_POST['brand']))?sanitize($_POST['brand']):'');
+		$price = ((isset($_POST['price']))?sanitize($_POST['price']):'');
+		$list_price = ((isset($_POST['list_price']))?sanitize($_POST['list_price']):'');
+		$description = ((isset($_POST['description']))?sanitize($_POST['description']):'');
+		$sizes = ((isset($_POST['sizes']))?sanitize($_POST['sizes']):'');
+		$saved_image = ((isset($_POST['photo']))?sanitize($_POST['photo']):'');
+		$category = ((isset($_POST['child']))?sanitize($_POST['child']):'');
+
 		$parent = ((isset($_POST['parent']))?$_POST['parent']:'');
 		if(isset($_GET['edit'])){
 			$edit_id = $_GET['edit'];
