@@ -11,7 +11,7 @@
 		$cat_id = "";
 	}
 
-	$sql = "SELECT * FROM product WHERE categories = '$cat_id' ";
+	$sql = "SELECT * FROM product WHERE categories = '$cat_id' AND deleted = 0 ";
 	//來自init.php的$db
 	$productQ = $db->query($sql);
 	$category = getCategory($cat_id);

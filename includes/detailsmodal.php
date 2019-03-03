@@ -41,7 +41,7 @@
 						<div class="row">
 							<div class="col-sm-6">
 								<div class="center-block">
-									<img src="<?= $product['image'] ?>" alt="Levis Jeans" class="details img-responsive">
+									<img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="details img-responsive">
 								</div>
 							</div>
 							<div class="col-sm-6">
@@ -55,7 +55,7 @@
 										<div class="row">
 											<div class="col-xs-3">
 												<label for="quantity">Quantity:</label>
-												<input type="text" class="form-control" id="quantity" name="quantity">
+												<input type="number" class="form-control" id="quantity" name="quantity" min="0">
 											</div>
 											<div class="col-xs-9"></div>
 										</div>
