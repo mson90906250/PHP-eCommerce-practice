@@ -27,6 +27,7 @@
 				</li>
 			
 			<?php endwhile; ?>
+			<li><a href="cart.php"><span class="glyphicon glyphicon-shopping-cart"></span> My Cart </a></li>
 		</ui>
 	</div>
 </nav>

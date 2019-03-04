@@ -46,6 +46,43 @@
 				}
 			})
 		}
+
+		function add_to_cart(){
+			jQuery("#modal_errors").html("");
+			var size = jQuery("#size").val();
+			var quantity = jQuery("#quantity").val();
+			quantity = Number(quantity);
+			var available = jQuery("#available").val();
+			available = Number(available);
+			var error = "";
+
+			//serialize() 方法通过序列化表单(form)值，创建 URL 编码文本字符串。
+			//您可以选择一个或多个表单元素（比如 input 及/或 文本框），或者 form 元素本身。
+			//序列化的值可在生成 AJAX 请求时用于 URL 查询字符串中。
+			var data = jQuery("#add_product_form").serialize();
+
+			if(size == "" || quantity == "" || quantity == 0 ){
+				error += '<p class="text-danger text-center">You must choose a size and quantity</p>';
+				jQuery("#modal_errors").html(error);
+				return;
+			}else if(quantity > available){
+				error += '<p class="text-danger text-center">There are only '+available+' available.</p>';
+				jQuery("#modal_errors").html(error);
+				return;
+			}else{
+				jQuery("#modal_errors").html("");
+				jQuery.ajax({
+					url:"/tutorial/admin/parsers/add_cart.php",
+					method:"post",
+					data: data,
+					success: function(){
+						location.reload();
+					},
+					error: function(){alert("Something went wrong with /tutorial/admin/parsers/add_cart.php")}
+				});
+			}
+			
+		}
 	</script>
 </body>
 </html>
