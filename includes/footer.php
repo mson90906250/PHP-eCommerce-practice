@@ -47,6 +47,17 @@
 			})
 		}
 
+		function update_cart(mode,edit_id,edit_size){
+			var data = {"mode" : mode,"edit_id" : edit_id, "edit_size" : edit_size};
+			jQuery.ajax({
+				url:"/tutorial/admin/parsers/update_cart.php",
+				method:"POST",
+				data: data,
+				success: function(){location.reload()},
+				error: function(){alert("Something went wrong with /tutorial/admin/parsers/update_cart.php")}
+			});
+		}
+
 		function add_to_cart(){
 			jQuery("#modal_errors").html("");
 			var size = jQuery("#size").val();

@@ -10,7 +10,7 @@
 		'size' => $size,
 		'quantity' => $quantity
 	);
-	$domain = ($_SERVER['HTTP_HOST'] != 'localhost')?'.'.$_SERVER['HTTP_HOST']:false;
+	$domain = ($_SERVER['HTTP_HOST'] != 'localhost') ? $_SERVER['HTTP_HOST'] : false;
 	$query = $db -> query("SELECT * FROM product WHERE id = '{$product_id}'");
 	$product = mysqli_fetch_assoc($query);
 	$_SESSION['success_flash'] = $product['title']." was added to your cart.";
@@ -47,6 +47,7 @@
 		setcookie(CART_COOKIE,'',1,'/',$domain,false);
 		setcookie(CART_COOKIE,$cart_id,CART_COOKIE_EXPIRE,'/',$domain,false);
 		
+		
 
 	}else{
 		//add the cart to database and set cookie
@@ -57,6 +58,7 @@
 		$cart_id = $db->insert_id;
 		$_SESSION['success_flash'] = $cart_id;
 		setcookie(CART_COOKIE,$cart_id,CART_COOKIE_EXPIRE,'/',$domain,false);
+		
 	}
 
  ?>

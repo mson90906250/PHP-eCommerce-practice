@@ -3,6 +3,8 @@
 	include "includes/head.php";
 	include "includes/navigation.php";
 	include "includes/headerpartial.php";
+
+
 	if($cart_id != ""){
 		$cartQ = $db->query("SELECT * FROM cart WHERE id = '{$cart_id}'");
 		$cart = mysqli_fetch_assoc($cartQ);
@@ -50,7 +52,17 @@
 							<td><?php echo $i; ?></td>
 							<td><?php echo $product['title']; ?></td>
 							<td><?php echo $product['price']; ?></td>
-							<td><?php echo $item['quantity']; ?></td>
+							<td>
+								<button class="btn btn-xs btn-default" onclick="update_cart('removeone','<?php echo $product['id']; ?>','<?php echo $item['size']; ?>')">-</button>
+								
+								<?php echo $item['quantity']; ?>	
+								
+								<?php if($item['quantity'] < $available): ?>
+									<button class="btn btn-xs btn-default" onclick="update_cart('addone','<?php echo $product['id']; ?>','<?php echo $item['size']; ?>')">+</button>
+								<?php else: ?>
+									<span class="text-danger">Max</span>	
+								<?php endif; ?>
+							</td>
 							<td><?php echo $item['size']; ?></td>
 							<td><?php echo money($product['price'] * $item['quantity']); ?></td>
 						</tr>

@@ -20,6 +20,7 @@
 	if(isset($_COOKIE[CART_COOKIE])){
 		$cart_id = $_COOKIE[CART_COOKIE];
 	}
+	
 
 
 	if(isset($_SESSION['SBUser'])){
