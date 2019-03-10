@@ -84,35 +84,41 @@
 			//確認有星號*的欄位是否都被填寫
 			$errors = array();
 			$required = array("title","brand","parent","child","price","sizes");
+			$tmpLoc = array();
+			$uploadPath = array();
+			//確認是否符合圖片格式規定
+			//自定一個格式規則
+			$allowed = array("png","jpg","jpeg","gif");			
 			foreach($required as $field){
 				if($_POST[$field]==""){
 					$errors[] = "All fields with an Astrisk required"; 
 					break;
 				}
 			}
-			if(isset($_FILES["photo"])){
-				if($_FILES["photo"]["size"] > 0){
-					//var_dump($_FILES);
-					$photo = $_FILES['photo'];
-					$name = $photo['name'];
+			var_dump($_FILES['photo']);
+			$photoCount = count($_FILES['photo']['name']);
+			if($photoCount > 0){
+				for($i=0; $i<$photoCount; $i++){
+			// 	if($_FILES["photo"]["size"] > 0){
+					$name = $_FILES['photo']['name'][$i];
 					$nameArray = explode(".", $name);
 					$fileName = $nameArray[0];//檔名
 					$fileExt = $nameArray[1];//副檔名
-					$mime = explode("/",$photo['type']);
+					$mime = explode("/",$_FILES['photo']['type'][$i]);
 					$mimeType = $mime[0];
 					$mimeExt = $mime[1];
-					$tmpLoc = $photo['tmp_name'];
-					$fileSize = $photo['size']; 
+					$tmpLoc[] = $_FILES['photo']['tmp_name'][$i];
+					$fileSize = $_FILES['photo']['size'][$i]; 
 					$uploadName = md5(microtime()).".".$fileExt;
-					$uploadPath = BASEURL."images/products/".$uploadName;
-					$dbPath = "/tutorial/images/products/".$uploadName;
+					$uploadPath[] = BASEURL."images/products/".$uploadName;
+					if($i != 0){
+						$dbPath .= ",";
+					}
+					$dbPath .= "/tutorial/images/products/".$uploadName;
 					//確認欲上傳的檔案是否為image
 					if($mimeType!="image"){
 						$errors[] = "Ths file must be an image.";
 					}
-					//確認是否符合圖片格式規定
-					//自定一個格式規則
-					$allowed = array("png","jpg","jpeg","gif");
 					if(!in_array($fileExt,$allowed)){
 						$errors[] = "The file extension must be a png,jpg,jpeg,or gif";
 					}
@@ -125,14 +131,20 @@
 						$errors[] = "File extension does not match the file";
 					}
 
-				}
+			// 	}
+				}	
 			}
 			
 			if(!empty($errors)){
 				echo display_errors($errors);
 			}else{
-				//上傳圖片並將圖片路徑輸入進database
-				move_uploaded_file($tmpLoc, $uploadPath);
+				if($photoCount > 0){
+					//move_uploaded_file(file,newloc) ; 上傳圖片並將圖片路徑輸入進database
+					for($i = 0; $i < $photoCount; $i++ ){
+						move_uploaded_file($tmpLoc[$i], $uploadPath[$i]);
+					}
+				}
+				
 				$sizes = rtrim($sizes,",");
 				$insertsql = "INSERT INTO product (title,price,list_price,brand,categories,image,description,sizes) VALUES ('$title','$price','$list_price','$brand','$category','$dbPath','$description','$sizes')";
 				if(isset($_GET['edit'])){
@@ -211,7 +223,7 @@
 					</div>
 				<?php else: ?>	
 					<label for="photo">Product Photo:</label>
-					<input type="file" name="photo" id="photo" class="form-control" multiple>
+					<input type="file" name="photo[]" id="photo" class="form-control" multiple>
 				<?php endif; ?>
 			</div>
 			<div class="form-group col-md-6">
