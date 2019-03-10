@@ -169,3 +169,7 @@ img.details{
     white-space: nowrap;
     overflow: hidden;
 }
+
+input.price-range{
+	width: 40%;
+}
