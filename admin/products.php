@@ -211,7 +211,7 @@
 					</div>
 				<?php else: ?>	
 					<label for="photo">Product Photo:</label>
-					<input type="file" name="photo" id="photo" class="form-control">
+					<input type="file" name="photo" id="photo" class="form-control" multiple>
 				<?php endif; ?>
 			</div>
 			<div class="form-group col-md-6">
