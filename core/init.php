@@ -1,5 +1,5 @@
-<!-- 用於跟database連結 -->
 <?php 
+//用來跟database做連結
 	//mysqli_connect('localhost','user','password','dbname')
 	$db = mysqli_connect('localhost','root','','tutorial');
 
@@ -15,6 +15,7 @@
 
 	require_once $_SERVER['DOCUMENT_ROOT'].'/tutorial/config.php';
 	require_once BASEURL.'helpers/helpers.php';
+	require BASEURL.'vendor/autoload.php';
 
 	$cart_id = "";
 	if(isset($_COOKIE[CART_COOKIE])){
@@ -44,5 +45,6 @@
 	}
 
  ?>
+
 
  

@@ -27,7 +27,9 @@
 					<div class="col-md-3" style="overflow: hidden;">
 						<!-- <?= a ?> 等同 <?php echo a ?> -->
 						<h4 class="text-center"><?= $product['title'] ?></h4>
-						<img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="img-thumb ">
+						<div class="text-center">
+							<img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="img-thumb ">
+						</div>
 						<p class="list-price text-danger">List Price: <s>$<?= $product['list_price'] ?></s></p>
 						<p class="price">Our Price: $<?= $product['price'] ?></p>		
 						<button type="button" class="btn btn-sm btn-success" onclick="detailsmodal(<?= $product['id']; ?>)">

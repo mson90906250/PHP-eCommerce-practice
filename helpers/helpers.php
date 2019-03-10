@@ -84,6 +84,32 @@
 		return $category;
 	}
 
+	//將prduct的sizes轉成array
+	function sizesToArray($string){ //ex: $string = "s:34,m:55,l:65,xl:90";
+		$sizesArray = explode(",",$string);
+		$returnArray = array();
+		foreach($sizesArray as $size){
+			$s = explode(":",$size);
+			//在$returnArray裡再放一個array 即$returnArray為一個二維array
+			$returnArray[] = array("size" => $s[0],"quantity" => $s[1]);
+		}
+		return $returnArray;
+	}
+
+	//將sizesArray 轉回 string
+	function sizesToString($sizes){
+		$sizesString = "";
+		foreach($sizes as $size){
+			$sizesString .= $size['size'].":".$size['quantity'].",";
+		}
+		//將末端的","去掉
+		$trimmed = rtrim($sizesString,",");
+		return $trimmed;
+	}
+
+	
+
+
 
 
 

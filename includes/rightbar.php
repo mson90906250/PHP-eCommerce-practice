@@ -1,2 +1,5 @@
-		<!-- Right Side Bar -->
-		<div class="col-md-2">Right Side Bar</div>
+<!-- Right Side Bar -->
+<div class="col-md-2">
+	<?php include "widgets/cart.php" ?>
+	<?php include "widgets/recent.php" ?>
+</div>

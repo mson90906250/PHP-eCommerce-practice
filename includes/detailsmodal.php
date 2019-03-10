@@ -71,7 +71,10 @@
 												$str_array = explode(":", $str);
 												$size = $str_array[0];
 												$available = $str_array[1];
-												echo '<option value="'.$size.'" data-available="'.$available.'" >'.$size.'('.$available.' Available)</option>';
+												//庫存大於0時才顯示
+												if($available > 0){
+													echo '<option value="'.$size.'" data-available="'.$available.'" >'.$size.'('.$available.' Available)</option>';
+												}	
 											} ?>
 										</select>
 									</div>
