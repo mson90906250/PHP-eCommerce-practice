@@ -36,10 +36,16 @@
 			$productRow = mysqli_fetch_assoc($productQuery);
 			//按下delete image按鈕後
 			if(isset($_GET['delete_image'])){
-				$image_url = $_SERVER['DOCUMENT_ROOT'].$productRow['image'];
+				$imgi = (int)$_GET['imgi']-1;
+				$images = explode(",",$productRow['image']);
+				$image_url = $_SERVER['DOCUMENT_ROOT'].$images[$imgi];
 				//unset($image_url);無法移除圖片
 				unlink($image_url);
-				$db->query("UPDATE product SET image = '' WHERE id = '$edit_id'");
+				//將已刪除的圖片路徑從$images中去掉
+				unset($images[$imgi]);
+				//將$images變回string
+				$imageString = implode(",", $images);
+				$db->query("UPDATE product SET image = '{$imageString}' WHERE id = '$edit_id'");
 				header("Location: products.php?edit=".$edit_id);
 			}
 			$title = ((isset($_POST['title']))?sanitize($_POST['title']):$productRow['title']);
@@ -95,7 +101,6 @@
 					break;
 				}
 			}
-			var_dump($_FILES['photo']);
 			$photoCount = count($_FILES['photo']['name']);
 			if($photoCount > 0){
 				for($i=0; $i<$photoCount; $i++){
@@ -109,7 +114,9 @@
 					$mimeExt = $mime[1];
 					$tmpLoc[] = $_FILES['photo']['tmp_name'][$i];
 					$fileSize = $_FILES['photo']['size'][$i]; 
-					$uploadName = md5(microtime()).".".$fileExt;
+					//由於有時候迴圈跑太快的關係,間隔可能低於1ms,導致前一張圖名和後一張圖名重複
+					//所以要加個$i 來保證圖名不重複
+					$uploadName = md5(microtime()).$i.".".$fileExt;
 					$uploadPath[] = BASEURL."images/products/".$uploadName;
 					if($i != 0){
 						$dbPath .= ",";
@@ -217,10 +224,19 @@
 			</div>
 			<div class="form-group col-md-6">
 				<?php if($saved_image!=''): ?>
-					<div class="saved-image">
-						<img src="<?= $saved_image ?>" alt="saved image" class="img-responsive center-block" >
-						<a href="products.php?delete_image=1&edit=<?= $edit_id ?>" class="btn btn-warning">Delete image</a>
+					<?php 
+						$imgi = 1;
+						$images = explode(",",$saved_image);
+						foreach($images as $image):
+					 ?>
+					<div class="saved-image col-md-4">
+						<img src="<?= $image ?>" alt="saved image" class="img-responsive center-block" >
+						<a href="products.php?delete_image=1&edit=<?= $edit_id ?>&imgi=<?php echo $imgi; ?>" class="btn btn-warning">Delete image</a>
 					</div>
+					<?php
+						$imgi++; 
+						endforeach; 
+						?>
 				<?php else: ?>	
 					<label for="photo">Product Photo:</label>
 					<input type="file" name="photo[]" id="photo" class="form-control" multiple>

@@ -28,7 +28,8 @@
 						<!-- <?= a ?> 等同 <?php echo a ?> -->
 						<h4 class="text-center"><?= $product['title'] ?></h4>
 						<div class="text-center">
-							<img src="<?= $product['image'] ?>" alt="<?= $product['title'] ?>" class="img-thumb ">
+							<?php $photos = explode(",",$product['image']); ?>					
+							<img src="<?= $photos[0] ?>" alt="<?= $product['title'] ?>" class="img-thumb ">
 						</div>
 						<p class="list-price text-danger">List Price: <s>$<?= $product['list_price'] ?></s></p>
 						<p class="price">Our Price: $<?= $product['price'] ?></p>		
