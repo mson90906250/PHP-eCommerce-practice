@@ -91,7 +91,7 @@
 		foreach($sizesArray as $size){
 			$s = explode(":",$size);
 			//在$returnArray裡再放一個array 即$returnArray為一個二維array
-			$returnArray[] = array("size" => $s[0],"quantity" => $s[1]);
+			$returnArray[] = array("size" => $s[0],"quantity" => $s[1],"threshold" => (isset($s[2]))?$s[2]:"");
 		}
 		return $returnArray;
 	}
@@ -100,7 +100,7 @@
 	function sizesToString($sizes){
 		$sizesString = "";
 		foreach($sizes as $size){
-			$sizesString .= $size['size'].":".$size['quantity'].",";
+			$sizesString .= $size['size'].":".$size['quantity'].":".$size['threshold'].",";
 		}
 		//將末端的","去掉
 		$trimmed = rtrim($sizesString,",");

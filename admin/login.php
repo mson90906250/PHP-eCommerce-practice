@@ -86,7 +86,7 @@
 		</div>
 		 <div class="form-group">
 		 	<label for="password">Password:</label>
-		 	<input type="password" name="password" id="password" value="$password" class="form-control">
+		 	<input type="password" name="password" id="password" value="" class="form-control">
 		 </div>
 		 <div class="form-group">
 		 	<input type="submit" class="btn btn-primary" value="Login">

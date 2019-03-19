@@ -43,8 +43,4 @@
 		echo "<div id='error_flash' class='bg-danger'><p class='text-danger  text-center'>".$_SESSION['error_flash']."</p></div>";
 		unset($_SESSION['error_flash']);
 	}
-
  ?>
-
-
- 

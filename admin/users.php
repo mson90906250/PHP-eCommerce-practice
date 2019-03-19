@@ -137,7 +137,7 @@
 			<tr>
 				<td>
 					<?php if($user['id'] != $user_data['id']): ?>
-						<a href="users.php?delete=<?= $user['id'] ?>" class="btn btn-xs btn-default">
+						<a href="users.php?delete=<?= $user['id'] ?>" class="btn btn-xs btn-default" onclick="return confirm('Are you sure that you want to delete this user?');">
 							<span class="glyphicon glyphicon-remove-sign"></span>
 						</a>
 					<?php endif; ?>	

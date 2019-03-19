@@ -70,13 +70,15 @@
 				//rtrim() 函数移除字符串右侧的空白字符或其他预定义字符。
 				$sizesString = rtrim($sizesString,",");
 				$sizesArray = explode(",", $sizesString);
-			//將size和quantity分開
+			//將size,quantity和threshold分開
 				$sArray = array();
 				$qArray = array();
+				$tArray = array();
 				foreach ($sizesArray as $ss) {
 					$sqArray = explode(":", $ss);
-					$sArray[] = $sqArray[0];
-					$qArray[] = $sqArray[1];
+					$sArray[] = (isset($sqArray[0]))?$sqArray[0]:"";
+					$qArray[] = (isset($sqArray[1]))?$sqArray[1]:"";
+					$tArray[] = (isset($sqArray[2]))?$sqArray[2]:"";
 					//$sqArray = array();	
 				}
 			}else{
@@ -102,6 +104,7 @@
 				}
 			}
 			$photoCount = count($_FILES['photo']['name']);
+
 			if($photoCount > 0){
 				for($i=0; $i<$photoCount; $i++){
 			// 	if($_FILES["photo"]["size"] > 0){
@@ -151,6 +154,7 @@
 						move_uploaded_file($tmpLoc[$i], $uploadPath[$i]);
 					}
 				}
+				var_dump($_FILES['photo']);
 				
 				$sizes = rtrim($sizes,",");
 				$insertsql = "INSERT INTO product (title,price,list_price,brand,categories,image,description,sizes) VALUES ('$title','$price','$list_price','$brand','$category','$dbPath','$description','$sizes')";
@@ -259,16 +263,20 @@
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		        <h4 class="modal-title" id="sizesModalLabel">Size & Quantity</h4>
 		      </div>
-		      <div class="modal-body">
-		      	<div class="container-fluid">
+		      <div class="modal-body timeline">
+		      	<div class="container-fluid ">
 		      		<?php for($i = 1;$i <= 12;$i++): ?>
-			        	<div class="form-group col-md-4">
+			        	<div class="form-group col-md-2">
 			        		<label for="size<?= $i ?>">Size:</label>
-			        		<input type="text" name="size<?= $i ?>" id="size<?= $i ?>" value="<?= ((!empty($sArray[$i-1]))?$sArray[$i-1]:'') ?>" class="form-control">
+			        		<input type="text" name="size<?= $i ?>" id="size<?= $i ?>" value="<?= ((!empty($sArray[$i-1]))?$sArray[$i-1]:'') ?>" class="form-control ">
 			        	</div>
 			        	<div class="form-group col-md-2">
 			        		<label for="qty<?= $i ?>">Quantity:</label>
-			        		<input type="number" name="qty<?= $i ?>" id="qty<?= $i ?>" min="0" value="<?= ((!empty($qArray[$i-1]))?$qArray[$i-1]:'') ?>" class="form-control">
+			        		<input type="number" name="qty<?= $i ?>" id="qty<?= $i ?>" min="0" value="<?= ((!empty($qArray[$i-1]))?$qArray[$i-1]:0) ?>" class="form-control">
+			        	</div>
+			        	<div class="form-group col-md-2">
+			        		<label for="threshold<?= $i ?>">Threshold:</label>
+			        		<input type="number" name="threshold<?= $i ?>" id="threshold<?= $i ?>" min="0" value="<?= ((!empty($tArray[$i-1]))?$tArray[$i-1]:0) ?>" class="form-control">
 			        	</div>
 		        	<?php endfor; ?>	
 		      	</div>
@@ -325,12 +333,12 @@
  			<tr>
  				<td>
  					<a href="products.php?edit=<?= $product['id'] ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
- 					<a href="products.php?delete=<?= $product['id'] ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-sign"></span></a>
+ 					<a href="products.php?delete=<?= $product['id'] ?>" class="btn btn-xs btn-default" onclick="return confirm('Are you sure that you want to delete this product?');"><span class="glyphicon glyphicon-remove-sign"></span></a>
  				</td>
  				<td><?= $product['title'] ?></td>
  				<td><?= money($product['price']) ?></td>
  				<td><?= $category ?></td>
- 				<td><a href="products.php?featured=<?= (($product['featured'] == 0)?'1':'0'); ?>&id=<?= $product['id'] ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-<?= (($product['featured'] == 0)?'plus':'minus'); ?> "></span></a>
+ 				<td><a href="products.php?featured=<?= (($product['featured'] == 0)?'1':'0'); ?>&id=<?= $product['id'] ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-<?= (($product['featured'] == 0)?'plus':'minus'); ?> " ></span></a>
  					<?= (($product['featured'] == 1)?'featured product':'') ?>
  				</td>
  				<td>0</td>

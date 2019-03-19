@@ -65,10 +65,10 @@
 				if($size['size'] == $item['size']){
 					//若兩邊size吻合即更新數量 
 					$q = $size['quantity'] - $item['quantity'];
-					$newSizes[] = array("size" => $size['size'],"quantity" => $q);
+					$newSizes[] = array("size" => $size['size'],"quantity" => $q,"threshold" => $size['threshold']);
 				}else{
 					//即使不吻合仍要更新
-					$newSizes[] = array("size" => $size['size'],"quantity" => $size['quantity']);
+					$newSizes[] = array("size" => $size['size'],"quantity" => $size['quantity'],"threshold" => $size['threshold']);
 				}
 			}
 			//更新database前將$newSizes轉成string

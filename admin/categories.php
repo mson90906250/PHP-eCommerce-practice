@@ -151,7 +151,7 @@
 	 						<td>parent</td>
 	 						<td>
 	 							<a href="categories.php?edit=<?= $parent['id']; ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
-	 							<a href="categories.php?delete=<?= $parent['id']; ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-sign"></span></a>
+	 							<a href="categories.php?delete=<?= $parent['id']; ?>" class="btn btn-xs btn-default" onclick="return confirm('Are you sure that you want to delete this category?');"><span class="glyphicon glyphicon-remove-sign"></span></a>
 	 						</td>
 	 					</tr>
 	 					<?php while($child = mysqli_fetch_assoc($cresult)): ?>
@@ -160,7 +160,7 @@
 	 						<td><?= $child['parent'] ?></td>
 	 						<td>
 	 							<a href="categories.php?edit=<?= $child['id']; ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
-	 							<a href="categories.php?delete=<?= $child['id']; ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-sign"></span></a>
+	 							<a href="categories.php?delete=<?= $child['id']; ?>" class="btn btn-xs btn-default" onclick="return confirm('Are you sure that you want to delete this category?');"><span class="glyphicon glyphicon-remove-sign"></span></a>
 	 						</td>
 	 					</tr>
 	 					<?php endwhile; ?>	

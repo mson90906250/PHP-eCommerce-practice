@@ -54,6 +54,7 @@
 		$items_json = json_encode($item);
 		$cart_expire = date("Y-m-d H:i:s",strtotime("+30days"));
 		$db->query("INSERT INTO cart (items,expire_date) VALUES ('{$items_json}','{$cart_expire}')" );
+		echo $items_json;
 		//$mysqli->insert_id : Returns the auto generated id used in the latest query
 		$cart_id = $db->insert_id;
 		$_SESSION['success_flash'] = $cart_id;

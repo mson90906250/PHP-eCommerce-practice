@@ -95,7 +95,7 @@
 			<tr>
 				<td><a href="brands.php?edit=<?= $brand['id']; ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-pencil"></span></a></td>
 				<td><?= $brand['brand'] ?></td>
-				<td><a href="brands.php?delete=<?= $brand['id']; ?>" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-remove-sign"></span></a></td>
+				<td><a href="brands.php?delete=<?= $brand['id']; ?>" class="btn btn-xs btn-default" onclick="return confirm('Are you sure that you want to delete this brand?');"><span class="glyphicon glyphicon-remove-sign"></span></a></td>
 			</tr>
 		<?php endwhile; ?>
 	</tbody>
